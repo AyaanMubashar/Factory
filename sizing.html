@@ -219,7 +219,6 @@
         .loom-slash { font-weight: 700; font-size: 16px; color: var(--text-color); }
         .loom-size-container input:last-child { flex: 1; }
 
-        /* Count Container Layout (2-digit input + material type dropdown) */
         .count-container {
             display: flex;
             align-items: center;
@@ -415,7 +414,7 @@
     </div>
 
     <div class="dashboard">
-        <form class="form-grid" onsubmit="event.preventDefault(); alert('Saved successfully!');">
+        <form class="form-grid" id="sizingForm" onsubmit="saveRecord(event)">
             
             <div class="form-group">
                 <label data-en="Set No" data-ur="سیٹ نمبر">Set No</label>
@@ -637,6 +636,57 @@
                 }
             });
         }
+
+        // Save data to localStorage on submit
+        function saveRecord(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('sizingForm');
+            const recordData = {};
+
+            const inputs = form.querySelectorAll('input, select');
+            inputs.forEach((input, index) => {
+                if (input.type !== 'button' && input.type !== 'submit') {
+                    recordData[`field_${index}`] = input.value;
+                }
+            });
+
+            const wasteInputs = document.querySelectorAll('#wasteContainer input');
+            const wasteValues = Array.from(wasteInputs).map(input => input.value);
+            recordData['wasteValues'] = wasteValues;
+
+            localStorage.setItem('sizingRecord', JSON.stringify(recordData));
+            
+            alert('Record saved to Local Storage successfully!');
+        }
+
+        // Restore saved data automatically when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedData = localStorage.getItem('sizingRecord');
+            if (savedData) {
+                const recordData = JSON.parse(savedData);
+                const form = document.getElementById('sizingForm');
+                const inputs = form.querySelectorAll('input, select');
+
+                inputs.forEach((input, index) => {
+                    if (input.type !== 'button' && input.type !== 'submit' && recordData[`field_${index}`] !== undefined) {
+                        input.value = recordData[`field_${index}`];
+                    }
+                });
+
+                if (recordData['wasteValues'] && recordData['wasteValues'].length > 0) {
+                    const container = document.getElementById('wasteContainer');
+                    container.innerHTML = '';
+                    
+                    recordData['wasteValues'].forEach(val => {
+                        const item = document.createElement('div');
+                        item.className = 'waste-item';
+                        item.innerHTML = `<input type="number" value="${val}" placeholder="0"><span class="waste-unit">kg</span>`;
+                        container.appendChild(item);
+                    });
+                }
+            }
+        });
     </script>
 
 </body>
