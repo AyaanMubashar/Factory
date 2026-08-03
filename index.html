@@ -10,39 +10,47 @@
     
     <style>
         :root {
-            /* Frosted glass crystal light theme */
-            --bg-color: #e2e8f0;
-            --card-bg: rgba(255, 255, 255, 0.55);
-            --text-color: #0f172a;
-            --btn-bg: #2563eb;
-            --btn-hover: #1d4ed8;
-            --btn-text: #ffffff;
-            --shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
-            --toggle-bg: rgba(255, 255, 255, 0.6);
+            /* Liquid Glass Light Theme */
+            --bg-color: #cbe3ff;
+            --card-bg: rgba(255, 255, 255, 0.45);
+            --text-color: #0b2240;
+            --btn-bg: rgba(255, 255, 255, 0.55);
+            --btn-hover: rgba(255, 255, 255, 0.85);
+            --btn-text: #1d4ed8;
+            --shadow: 0 30px 60px rgba(29, 78, 216, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.9), inset 0 -2px 5px rgba(0, 0, 0, 0.05);
+            --toggle-bg: rgba(255, 255, 255, 0.5);
             --toggle-text: #1d4ed8;
             --border-color: rgba(255, 255, 255, 0.8);
+            --glow-1: rgba(96, 165, 250, 0.6);
+            --glow-2: rgba(56, 189, 248, 0.6);
+            --blob-1: rgba(255, 255, 255, 0.6);
+            --blob-2: rgba(147, 197, 253, 0.5);
         }
 
         [data-theme="dark"] {
-            /* Frosted glass crystal dark theme */
-            --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.5);
+            /* Liquid Glass Dark Theme */
+            --bg-color: #030712;
+            --card-bg: rgba(15, 23, 42, 0.35);
             --text-color: #f8fafc;
-            --btn-bg: #3b82f6;
-            --btn-hover: #60a5fa;
-            --btn-text: #0f172a;
-            --shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
-            --toggle-bg: rgba(255, 255, 255, 0.1);
-            --toggle-text: #f8fafc;
-            --border-color: rgba(255, 255, 255, 0.12);
+            --btn-bg: rgba(255, 255, 255, 0.07);
+            --btn-hover: rgba(255, 255, 255, 0.15);
+            --btn-text: #60a5fa;
+            --shadow: 0 30px 60px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.15), inset 0 -1px 2px rgba(0, 0, 0, 0.5);
+            --toggle-bg: rgba(255, 255, 255, 0.07);
+            --toggle-text: #60a5fa;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glow-1: rgba(30, 58, 138, 0.4);
+            --glow-2: rgba(3, 105, 161, 0.3);
+            --blob-1: rgba(37, 99, 235, 0.25);
+            --blob-2: rgba(14, 165, 233, 0.2);
         }
 
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-color);
             background-image: 
-                radial-gradient(at 10% 20%, rgba(37, 99, 235, 0.15) 0px, transparent 50%),
-                radial-gradient(at 90% 80%, rgba(14, 165, 233, 0.15) 0px, transparent 50%);
+                radial-gradient(circle at 10% 20%, var(--glow-1) 0px, transparent 40%),
+                radial-gradient(circle at 90% 80%, var(--glow-2) 0px, transparent 40%);
             color: var(--text-color);
             margin: 0;
             padding: 0;
@@ -50,22 +58,58 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow: hidden;
+            /* Adjusted to 1.2 seconds for a slightly faster, yet buttery smooth transition */
+            transition: background-color 1.2s ease-in-out, 
+                        color 1.2s ease-in-out;
+        }
+
+        .liquid-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(60px);
+            border-radius: 50%;
+            transition: background 1.2s ease-in-out;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 55vw;
+            height: 55vw;
+            background: var(--blob-1);
+        }
+
+        .blob-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: var(--blob-2);
         }
 
         .dashboard {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
             border: 1px solid var(--border-color);
-            padding: 45px 40px;
-            border-radius: 24px;
+            padding: 55px 40px 45px 40px;
+            border-radius: 32px;
             box-shadow: var(--shadow);
             text-align: center;
             max-width: 420px;
             width: 100%;
             position: relative;
-            transition: background 0.4s ease, box-shadow 0.4s ease, border 0.4s ease;
+            transition: background 1.2s ease-in-out, 
+                        box-shadow 1.2s ease-in-out, 
+                        border 1.2s ease-in-out;
         }
 
         .theme-toggle {
@@ -73,8 +117,8 @@
             top: 20px;
             right: 20px;
             background-color: var(--toggle-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             color: var(--toggle-text);
             border: 1px solid var(--border-color);
             padding: 8px 14px;
@@ -82,20 +126,22 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: 600;
-            transition: transform 0.2s ease, opacity 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, background-color 1.2s ease-in-out, color 1.2s ease-in-out, border 1.2s ease-in-out;
         }
 
         .theme-toggle:hover {
-            opacity: 0.85;
             transform: scale(1.05);
         }
 
         h1 {
-            margin-top: 20px;
+            margin-top: 10px;
             margin-bottom: 30px;
             font-size: 28px;
             font-weight: 700;
             letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: color 1.2s ease-in-out;
         }
 
         .button-container {
@@ -105,33 +151,45 @@
         }
 
         .btn {
-            background-color: var(--btn-bg);
+            background: var(--btn-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             color: var(--btn-text);
-            border: none;
-            padding: 15px 20px;
+            border: 1px solid var(--border-color);
+            padding: 16px 20px;
             font-size: 16px;
             font-weight: 600;
-            border-radius: 12px;
+            border-radius: 16px;
             cursor: pointer;
             text-decoration: none;
             display: block;
-            transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+            transition: background 1.2s ease-in-out, 
+                        color 1.2s ease-in-out, 
+                        border 1.2s ease-in-out, 
+                        box-shadow 1.2s ease-in-out, 
+                        transform 0.25s ease;
         }
 
         .btn:hover {
-            background-color: var(--btn-hover);
-            transform: scale(1.03);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+            background: var(--btn-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.9);
         }
 
         .btn:active {
-            transform: scale(0.98);
+            transform: translateY(-1px);
         }
     </style>
 </head>
 <body>
 
-    <div class="dashboard">
+    <div class="liquid-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="dashboard" id="dashboardCard">
         <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">🌙 Dark</button>
         <h1>Textile Management</h1>
         <div class="button-container">
