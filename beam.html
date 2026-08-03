@@ -343,7 +343,6 @@
             font-size: 15px;
         }
 
-        /* EXTRA WIDE HORIZONTAL INPUTS */
         td input {
             width: 100%;
             background: var(--input-bg);
@@ -397,7 +396,7 @@
         <div class="search-section">
             <div class="form-group">
                 <label data-en="Enter Set No" data-ur="سیٹ نمبر درج کریں">Enter Set No</label>
-                <input type="number" id="searchSetNo" value="0" placeholder="e.g. 0 or 18">
+                <input type="number" id="searchSetNo" placeholder="e.g. 20">
             </div>
             <button type="button" class="btn" onclick="loadSetData()" data-en="Load Beams" data-ur="بیم لوڈ کریں">Load Beams</button>
         </div>
@@ -406,36 +405,34 @@
     </div>
 
     <script>
-        const mockSizingDatabase = {
-            "0": {
-                setNo: "0 (Test Set)",
-                sizingName: "Rafi Sizing",
-                date: "2026-04-07",
-                partyName: "Rafi Sizing",
-                beamCount: 4 
-            },
-            "18": {
-                setNo: "18",
-                sizingName: "Rafi Sizing",
-                date: "2026-04-07",
-                partyName: "Rafi Sizing",
-                beamCount: 4 
-            }
-        };
-
         let currentBeamCount = 4;
 
         function loadSetData() {
             const setNo = document.getElementById('searchSetNo').value.trim();
             const area = document.getElementById('contentArea');
 
+            // Retrieve data dynamically saved from your Sizing Tab (stored in browser memory)
+            const savedSizingRecords = JSON.parse(localStorage.getItem('sizingRecords') || '{}');
+
+            // Fallback default mock database if local storage is empty
+            const mockSizingDatabase = {
+                "20": {
+                    setNo: "20",
+                    sizingName: "Rafi Sizing",
+                    date: "2026-04-07",
+                    partyName: "Rafi Sizing",
+                    beamCount: 4 
+                },
+                ...savedSizingRecords
+            };
+
             if (!setNo || !mockSizingDatabase[setNo]) {
-                area.innerHTML = `<div class="empty-state" data-en="No sizing record found for Set No: ${setNo}" data-ur="سیٹ نمبر ${setNo} کے لیے کوئی ریکارڈ نہیں ملا">No sizing record found for Set No: ${setNo}</div>`;
+                area.innerHTML = `<div class="empty-state" data-en="No sizing record found for Set No: ${setNo}. Please submit it from the Sizing tab first!" data-ur="سیٹ نمبر ${setNo} کے لیے کوئی ریکارڈ نہیں ملا۔ براہ کرم پہلے سائزنگ ٹیب سے جمع کریں!">No sizing record found for Set No: ${setNo}. Please submit it from the Sizing tab first!</div>`;
                 return;
             }
 
             const data = mockSizingDatabase[setNo];
-            currentBeamCount = data.beamCount;
+            currentBeamCount = data.beamCount || 4;
 
             let html = `
                 <div class="info-card">
@@ -445,15 +442,15 @@
                     </div>
                     <div class="info-item">
                         <span data-en="Sizing Name" data-ur="سائزنگ نام">Sizing Name</span>
-                        <span>${data.sizingName}</span>
+                        <span>${data.sizingName || 'N/A'}</span>
                     </div>
                     <div class="info-item">
                         <span data-en="Date" data-ur="تاریخ">Date</span>
-                        <span>${data.date}</span>
+                        <span>${data.date || 'N/A'}</span>
                     </div>
                     <div class="info-item">
                         <span data-en="Party Name" data-ur="پارٹی کا نام">Party Name</span>
-                        <span>${data.partyName}</span>
+                        <span>${data.partyName || 'N/A'}</span>
                     </div>
                 </div>
 
@@ -462,7 +459,7 @@
                     <div class="beam-meta-banner">
             `;
 
-            for (let i = 1; i <= data.beamCount; i++) {
+            for (let i = 1; i <= currentBeamCount; i++) {
                 html += `
                     <div class="beam-cut-box">
                         <label data-en="Beam ${i} Cut (Constant):" data-ur="بیم ${i} کٹ (مقررہ):">Beam ${i} Cut:</label>
@@ -485,7 +482,7 @@
                                 <tr>
             `;
 
-            for (let i = 1; i <= data.beamCount; i++) {
+            for (let i = 1; i <= currentBeamCount; i++) {
                 html += `
                     <th colspan="3" data-en="Beam ${i}" data-ur="بیم ${i}">Beam ${i}</th>
                 `;
@@ -496,7 +493,7 @@
                                 <tr>
             `;
 
-            for (let i = 1; i <= data.beamCount; i++) {
+            for (let i = 1; i <= currentBeamCount; i++) {
                 html += `
                     <th data-en="Date & Loom No" data-ur="تاریخ اور لوم نمبر">Date & Loom No</th>
                     <th data-en="Metres" data-ur="میٹر">Metres</th>
@@ -511,7 +508,7 @@
             `;
 
             for (let r = 1; r <= 6; r++) {
-                html += generateTableRowHTML(data.beamCount);
+                html += generateTableRowHTML(currentBeamCount);
             }
 
             html += `
@@ -558,10 +555,6 @@
                 tbody.deleteRow(tbody.rows.length - 1);
             }
         }
-
-        window.onload = function() {
-            loadSetData();
-        };
 
         function toggleTheme() {
             const html = document.documentElement;
