@@ -227,6 +227,17 @@
         .length-container input { flex: 2; }
         .length-container select { flex: 1; padding: 10px 6px; }
 
+        /* Full row span for Time */
+        .time-group {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .time-group {
+                grid-column: span 1;
+            }
+        }
+
         /* Matched Uniform Waste Layout */
         .waste-group {
             grid-column: span 2;
@@ -392,7 +403,7 @@
         <form class="form-grid" onsubmit="event.preventDefault(); alert('Saved successfully!');">
             
             <div class="form-group">
-                <label data-en="Set No" data-ur="سیٹ نمبر">Set No</label>
+                <label data-en="Set No" data-ur=" نمبر"> No</label>
                 <input type="number" placeholder="">
             </div>
 
@@ -489,10 +500,10 @@
 
             <div class="form-group">
                 <label data-en="Badst" data-ur="بدست">Badst</label>
-                <input type="text" placeholder="Characters Only">
+                <input type="text" placeholder="Chars only">
             </div>
 
-            <div class="form-group">
+            <div class="form-group time-group">
                 <label data-en="Time" data-ur="وقت">Time</label>
                 <input type="time">
             </div>
