@@ -219,6 +219,23 @@
         .loom-slash { font-weight: 700; font-size: 16px; color: var(--text-color); }
         .loom-size-container input:last-child { flex: 1; }
 
+        /* Count Container Layout (2-digit input + material type dropdown) */
+        .count-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .count-container input {
+            flex: 1;
+            text-align: center;
+        }
+
+        .count-container select {
+            flex: 2;
+            padding: 10px 8px;
+        }
+
         .length-container {
             display: flex;
             align-items: center;
@@ -227,7 +244,6 @@
         .length-container input { flex: 2; }
         .length-container select { flex: 1; padding: 10px 6px; }
 
-        /* Full row span for Time */
         .time-group {
             grid-column: span 2;
         }
@@ -238,7 +254,6 @@
             }
         }
 
-        /* Matched Uniform Waste Layout */
         .waste-group {
             grid-column: span 2;
         }
@@ -403,7 +418,7 @@
         <form class="form-grid" onsubmit="event.preventDefault(); alert('Saved successfully!');">
             
             <div class="form-group">
-                <label data-en="Set No" data-ur=" نمبر"> No</label>
+                <label data-en="Set No" data-ur="سیٹ نمبر">Set No</label>
                 <input type="number" placeholder="">
             </div>
 
@@ -424,7 +439,7 @@
             <div class="form-group">
                 <label data-en="Loom Size" data-ur="لوم سائز">Loom Size</label>
                 <div class="loom-size-container">
-                    <input type="number" placeholder="000" maxlength="3">
+                    <input type="number" placeholder="00" maxlength="3">
                     <span class="loom-slash">/</span>
                     <input type="number" placeholder="0" maxlength="1">
                 </div>
@@ -438,6 +453,19 @@
             <div class="form-group">
                 <label data-en="Tar" data-ur="تار">Tar</label>
                 <input type="number" placeholder="0">
+            </div>
+
+            <div class="form-group">
+                <label data-en="Count" data-ur="کاؤنٹ">Count</label>
+                <div class="count-container">
+                    <input type="number" placeholder="00" maxlength="2">
+                    <select>
+                        <option value="" disabled selected data-en="Select material" data-ur="مٹیریل منتخب کریں">Select material</option>
+                        <option value="staple" data-en="Staple" data-ur="سٹیپل">Staple</option>
+                        <option value="viscoss" data-en="Viscoss" data-ur="وسکوس">Viscoss</option>
+                        <option value="ctn" data-en="Ctn" data-ur="کاٹن">Ctn</option>
+                    </select>
+                </div>
             </div>
 
             <div class="form-group">
