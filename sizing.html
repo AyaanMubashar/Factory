@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sizing - Textile Project Dashboard</title>
+    <title>Sizing - Textile Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
-    
     <style>
         :root {
             --bg-color: #cbe3ff;
@@ -52,7 +51,7 @@
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-color);
-            background-image: 
+            background-image:
                 radial-gradient(circle at 10% 20%, var(--glow-1) 0px, transparent 40%),
                 radial-gradient(circle at 90% 80%, var(--glow-2) 0px, transparent 40%);
             color: var(--text-color);
@@ -163,9 +162,7 @@
         }
 
         @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
+            .form-grid { grid-template-columns: 1fr; }
         }
 
         .form-group {
@@ -240,17 +237,17 @@
             align-items: center;
             gap: 6px;
         }
+
         .length-container input { flex: 2; }
         .length-container select { flex: 1; padding: 10px 6px; }
 
         .time-group {
-            grid-column: span 2;
+            grid-column: span 1;
+            max-width: 240px;
         }
 
         @media (max-width: 768px) {
-            .time-group {
-                grid-column: span 1;
-            }
+            .time-group { grid-column: span 1; max-width: 100%; }
         }
 
         .waste-group {
@@ -258,9 +255,7 @@
         }
 
         @media (max-width: 768px) {
-            .waste-group {
-                grid-column: span 1;
-            }
+            .waste-group { grid-column: span 1; }
         }
 
         .waste-label-row {
@@ -398,7 +393,6 @@
     </style>
 </head>
 <body data-lang="en">
-
     <div class="liquid-bg">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -414,21 +408,20 @@
     </div>
 
     <div class="dashboard">
-        <form class="form-grid" id="sizingForm" onsubmit="saveRecord(event)">
-            
+        <form class="form-grid" id="sizingForm" onsubmit="saveRecord(event)" novalidate>
             <div class="form-group">
                 <label data-en="Set No" data-ur="سیٹ نمبر">Set No</label>
-                <input type="number" placeholder="">
+                <input type="number" name="setNo" placeholder="">
             </div>
 
             <div class="form-group">
                 <label data-en="Date" data-ur="تاریخ">Date</label>
-                <input type="date">
+                <input type="date" name="date">
             </div>
 
             <div class="form-group">
                 <label data-en="Name Party" data-ur="پارٹی کا نام">Name Party</label>
-                <select>
+                <select name="nameParty">
                     <option value="" disabled selected data-en="Select party" data-ur="پارٹی منتخب کریں">Select party</option>
                     <option value="Rafi Sizing">Rafi Sizing</option>
                     <option value="BSI">BSI</option>
@@ -438,27 +431,27 @@
             <div class="form-group">
                 <label data-en="Loom Size" data-ur="لوم سائز">Loom Size</label>
                 <div class="loom-size-container">
-                    <input type="number" placeholder="00" maxlength="3">
+                    <input type="number" name="loomSizeA" placeholder="00" maxlength="3">
                     <span class="loom-slash">/</span>
-                    <input type="number" placeholder="0" maxlength="1">
+                    <input type="number" name="loomSizeB" placeholder="0" maxlength="1">
                 </div>
             </div>
 
             <div class="form-group">
                 <label data-en="Quality Maal" data-ur="معیار مال">Quality Maal</label>
-                <input type="number" placeholder="0">
+                <input type="number" name="qualityMaal" placeholder="0">
             </div>
 
             <div class="form-group">
                 <label data-en="Tar" data-ur="تار">Tar</label>
-                <input type="number" placeholder="0">
+                <input type="number" name="tar" placeholder="0">
             </div>
 
             <div class="form-group">
                 <label data-en="Count" data-ur="کاؤنٹ">Count</label>
                 <div class="count-container">
-                    <input type="number" placeholder="00" maxlength="2">
-                    <select>
+                    <input type="number" name="countNo" placeholder="00" maxlength="2">
+                    <select name="material">
                         <option value="" disabled selected data-en="Select material" data-ur="مٹیریل منتخب کریں">Select material</option>
                         <option value="staple" data-en="Staple" data-ur="سٹیپل">Staple</option>
                         <option value="viscoss" data-en="Viscoss" data-ur="وسکوس">Viscoss</option>
@@ -468,13 +461,18 @@
             </div>
 
             <div class="form-group">
+                <label data-en="Beam Cut" data-ur="بیم کٹ">Beam Cut</label>
+                <input type="number" name="beamCut" placeholder="0" inputmode="numeric">
+            </div>
+
+            <div class="form-group">
                 <label data-en="Quantity Bag" data-ur="تعداد بے۔">Quantity Bag</label>
-                <input type="number" placeholder="0">
+                <input type="number" name="quantityBag" placeholder="0">
             </div>
 
             <div class="form-group">
                 <label data-en="Quantity Beam" data-ur="تعداد بیم">Quantity Beam</label>
-                <select>
+                <select name="quantityBeam">
                     <option value="" disabled selected data-en="Select beam" data-ur="بیم منتخب کریں">Select beam</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -489,13 +487,13 @@
 
             <div class="form-group">
                 <label data-en="Gullay" data-ur="گلّے">Gullay</label>
-                <input type="number" placeholder="0">
+                <input type="number" name="gullay" placeholder="0">
             </div>
 
             <div class="form-group">
                 <label data-en="Weight" data-ur="وزن">Weight</label>
                 <div class="input-with-unit">
-                    <input type="number" placeholder="0">
+                    <input type="number" name="weight" placeholder="0">
                     <span class="input-unit">kg</span>
                 </div>
             </div>
@@ -503,22 +501,22 @@
             <div class="form-group">
                 <label data-en="Quality Set" data-ur="معیار سیٹ">Quality Set</label>
                 <div class="loom-size-container">
-                    <input type="number" placeholder="000" maxlength="3">
+                    <input type="number" name="qualitySetA" placeholder="000" maxlength="3">
                     <span class="loom-slash">/</span>
-                    <input type="number" placeholder="0" maxlength="1">
+                    <input type="number" name="qualitySetB" placeholder="0" maxlength="1">
                 </div>
             </div>
 
             <div class="form-group">
                 <label data-en="Empty Bag" data-ur="خالی تھیلا">Empty Bag</label>
-                <input type="number" placeholder="0">
+                <input type="number" name="emptyBag" placeholder="0">
             </div>
 
             <div class="form-group">
                 <label data-en="Length" data-ur="لمبائی">Length</label>
                 <div class="length-container">
-                    <input type="number" placeholder="0">
-                    <select>
+                    <input type="number" name="lengthValue" placeholder="0">
+                    <select name="lengthUnit">
                         <option value="metre" data-en="Metre" data-ur="میٹر">Metre</option>
                         <option value="guz" data-en="Guz" data-ur="گز">Guz</option>
                     </select>
@@ -527,12 +525,12 @@
 
             <div class="form-group">
                 <label data-en="Badst" data-ur="بدست">Badst</label>
-                <input type="text" placeholder="Chars only">
+                <input type="text" name="badst" placeholder="Chars only">
             </div>
 
             <div class="form-group time-group">
                 <label data-en="Time" data-ur="وقت">Time</label>
-                <input type="time">
+                <input type="time" name="time">
             </div>
 
             <div class="form-group waste-group">
@@ -545,17 +543,12 @@
                 </div>
                 <div class="waste-items-container" id="wasteContainer">
                     <div class="waste-item"><input type="number" placeholder="0"><span class="waste-unit">kg</span></div>
-                    <div class="waste-item"><input type="number" placeholder="0"><span class="waste-unit">kg</span></div>
-                    <div class="waste-item"><input type="number" placeholder="0"><span class="waste-unit">kg</span></div>
-                    <div class="waste-item"><input type="number" placeholder="0"><span class="waste-unit">kg</span></div>
-                    <div class="waste-item"><input type="number" placeholder="0"><span class="waste-unit">kg</span></div>
                 </div>
             </div>
 
             <div class="actions-bar">
                 <button type="submit" class="btn" data-en="Save Record" data-ur="ریکارڈ محفوظ کریں">Save Record</button>
             </div>
-
         </form>
     </div>
 
@@ -573,14 +566,14 @@
             if (container.children.length > 1) {
                 container.lastElementChild.remove();
             } else {
-                alert('At least one waste entry is required.');
+                const lang = document.body.getAttribute('data-lang') || 'en';
+                alert(lang === 'ur' ? 'کم از کم ایک ویسٹ اینٹری درکار ہے۔' : 'At least one waste entry is required.');
             }
         }
 
         function toggleTheme() {
             const html = document.documentElement;
             const btn = document.getElementById('themeToggleBtn');
-            
             if (html.getAttribute('data-theme') === 'dark') {
                 html.removeAttribute('data-theme');
                 btn.textContent = '🌙 Dark';
@@ -594,100 +587,107 @@
             const body = document.body;
             const langBtn = document.getElementById('langToggleBtn');
             const pageTitle = document.getElementById('pageTitle');
-            const currentLang = body.getAttribute('data-lang');
+            const nextLang = body.getAttribute('data-lang') === 'en' ? 'ur' : 'en';
 
-            if (currentLang === 'en') {
-                body.setAttribute('data-lang', 'ur');
-                langBtn.textContent = 'English';
-                pageTitle.textContent = 'سائزنگ اندراج';
-            } else {
-                body.setAttribute('data-lang', 'en');
-                langBtn.textContent = 'اردو';
-                pageTitle.textContent = 'Sizing Entry';
-            }
+            body.setAttribute('data-lang', nextLang);
+            langBtn.textContent = nextLang === 'ur' ? 'English' : 'اردو';
+            pageTitle.textContent = nextLang === 'ur' ? 'سائزنگ اندراج' : 'Sizing Entry';
 
-            const translateElements = document.querySelectorAll('[data-en]');
-            translateElements.forEach(el => {
-                const textEn = el.getAttribute('data-en');
-                const textUr = el.getAttribute('data-ur');
-                if (body.getAttribute('data-lang') === 'ur') {
-                    if (el.tagName === 'INPUT') {
-                        el.placeholder = textUr;
-                    } else if (el.tagName === 'SELECT' && el.options[0] && el.options[0].disabled) {
-                        el.options[0].text = textUr;
-                    } else {
-                        el.textContent = textUr;
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const en = el.getAttribute('data-en');
+                const ur = el.getAttribute('data-ur') || en;
+                if (el.tagName === 'INPUT') {
+                    el.placeholder = nextLang === 'ur' ? ur : en;
+                } else if (el.tagName === 'SELECT') {
+                    if (el.options[0] && el.options[0].disabled) {
+                        el.options[0].text = nextLang === 'ur' ? ur : en;
                     }
                 } else {
-                    if (el.tagName === 'INPUT') {
-                        el.placeholder = textEn;
-                    } else if (el.tagName === 'SELECT' && el.options[0] && el.options[0].disabled) {
-                        el.options[0].text = textEn;
-                    } else {
-                        el.textContent = textEn;
-                    }
+                    el.textContent = nextLang === 'ur' ? ur : en;
                 }
             });
 
-            const selectOptions = document.querySelectorAll('select option[data-en]');
-            selectOptions.forEach(opt => {
+            document.querySelectorAll('select option[data-en]').forEach(opt => {
                 if (!opt.disabled) {
-                    opt.textContent = body.getAttribute('data-lang') === 'ur' ? opt.getAttribute('data-ur') : opt.getAttribute('data-en');
+                    opt.textContent = nextLang === 'ur' ? opt.getAttribute('data-ur') : opt.getAttribute('data-en');
                 }
             });
         }
 
-        // Save data to localStorage on submit
         function saveRecord(event) {
             event.preventDefault();
-            
-            const form = document.getElementById('sizingForm');
-            const recordData = {};
 
-            const inputs = form.querySelectorAll('input, select');
-            inputs.forEach((input, index) => {
-                if (input.type !== 'button' && input.type !== 'submit') {
-                    recordData[`field_${index}`] = input.value;
+            const form = document.getElementById('sizingForm');
+            const lang = document.body.getAttribute('data-lang') || 'en';
+            let isValid = true;
+
+            // Check standard inputs and selects
+            const mainInputs = form.querySelectorAll('input[name], select[name]');
+            mainInputs.forEach(input => {
+                if (input.closest('#wasteContainer')) return;
+                if (!input.value.trim()) {
+                    isValid = false;
                 }
             });
 
+            // Check waste inputs
             const wasteInputs = document.querySelectorAll('#wasteContainer input');
-            const wasteValues = Array.from(wasteInputs).map(input => input.value);
-            recordData['wasteValues'] = wasteValues;
+            wasteInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                }
+            });
 
+            // If data is incomplete, show error popup in active language
+            if (!isValid) {
+                const errMsg = lang === 'ur' 
+                    ? '!ڈیٹا مکمل نہیں ہے! براہ کرم تمام خانوں کو پر کریں' 
+                    : 'Data not complete! Please fill in all fields.';
+                alert(errMsg);
+                return;
+            }
+
+            // Collect Form Data
+            const recordData = {};
+            mainInputs.forEach(input => {
+                if (input.closest('#wasteContainer')) return;
+                recordData[input.name] = input.value;
+            });
+
+            recordData.wasteValues = Array.from(wasteInputs).map(input => input.value);
             localStorage.setItem('sizingRecord', JSON.stringify(recordData));
-            
-            alert('Record saved to Local Storage successfully!');
+
+            // Show success popup in active language
+            const successMsg = lang === 'ur' 
+                ? '!ریکارڈ کامیابی کے ساتھ محفوظ ہو گیا ہے' 
+                : 'Record saved successfully!';
+            alert(successMsg);
         }
 
-        // Restore saved data automatically when the page loads
         window.addEventListener('DOMContentLoaded', () => {
             const savedData = localStorage.getItem('sizingRecord');
-            if (savedData) {
-                const recordData = JSON.parse(savedData);
-                const form = document.getElementById('sizingForm');
-                const inputs = form.querySelectorAll('input, select');
+            if (!savedData) return;
 
-                inputs.forEach((input, index) => {
-                    if (input.type !== 'button' && input.type !== 'submit' && recordData[`field_${index}`] !== undefined) {
-                        input.value = recordData[`field_${index}`];
-                    }
-                });
+            const recordData = JSON.parse(savedData);
+            const form = document.getElementById('sizingForm');
 
-                if (recordData['wasteValues'] && recordData['wasteValues'].length > 0) {
-                    const container = document.getElementById('wasteContainer');
-                    container.innerHTML = '';
-                    
-                    recordData['wasteValues'].forEach(val => {
-                        const item = document.createElement('div');
-                        item.className = 'waste-item';
-                        item.innerHTML = `<input type="number" value="${val}" placeholder="0"><span class="waste-unit">kg</span>`;
-                        container.appendChild(item);
-                    });
+            form.querySelectorAll('input[name], select[name]').forEach(input => {
+                if (input.closest('#wasteContainer')) return;
+                if (recordData[input.name] !== undefined) {
+                    input.value = recordData[input.name];
                 }
-            }
+            });
+
+            const container = document.getElementById('wasteContainer');
+            container.innerHTML = '';
+            const values = Array.isArray(recordData.wasteValues) && recordData.wasteValues.length ? recordData.wasteValues : [''];
+            values.forEach(val => {
+                const item = document.createElement('div');
+                item.className = 'waste-item';
+                item.innerHTML = `<input type="number" value="${val || ''}" placeholder="0"><span class="waste-unit">kg</span>`;
+                container.appendChild(item);
+            });
         });
     </script>
-
 </body>
 </html>
