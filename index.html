@@ -6,11 +6,9 @@
     <title>Textile Project Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Liquid Glass Light Theme */
             --bg-color: #cbe3ff;
             --card-bg: rgba(255, 255, 255, 0.45);
             --text-color: #0b2240;
@@ -25,10 +23,10 @@
             --glow-2: rgba(56, 189, 248, 0.6);
             --blob-1: rgba(255, 255, 255, 0.6);
             --blob-2: rgba(147, 197, 253, 0.5);
+            --input-bg: rgba(255, 255, 255, 0.5);
         }
 
         [data-theme="dark"] {
-            /* Liquid Glass Dark Theme */
             --bg-color: #030712;
             --card-bg: rgba(15, 23, 42, 0.35);
             --text-color: #f8fafc;
@@ -43,25 +41,41 @@
             --glow-2: rgba(3, 105, 161, 0.3);
             --blob-1: rgba(37, 99, 235, 0.25);
             --blob-2: rgba(14, 165, 233, 0.2);
+            --input-bg: rgba(30, 41, 59, 0.45);
         }
 
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-color);
-            background-image: 
+            background-image:
                 radial-gradient(circle at 10% 20%, var(--glow-1) 0px, transparent 40%),
                 radial-gradient(circle at 90% 80%, var(--glow-2) 0px, transparent 40%);
             color: var(--text-color);
             margin: 0;
-            padding: 0;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             overflow: hidden;
-            /* Adjusted to 1.2 seconds for a slightly faster, yet buttery smooth transition */
-            transition: background-color 1.2s ease-in-out, 
-                        color 1.2s ease-in-out;
+            transition: background-color 1.2s ease-in-out, color 1.2s ease-in-out;
+        }
+
+        body[data-lang="ur"] {
+            direction: rtl;
+            font-family: 'Noto Nastaliq Urdu', 'Outfit', sans-serif;
+            line-height: 2.2;
+        }
+
+        body[data-lang="ur"] h1 {
+            font-size: 26px;
+            line-height: 2;
+        }
+
+        body[data-lang="ur"] label, 
+        body[data-lang="ur"] input,
+        body[data-lang="ur"] button,
+        body[data-lang="ur"] .link-btn {
+            font-size: 14px;
         }
 
         .liquid-bg {
@@ -79,46 +93,51 @@
             transition: background 1.2s ease-in-out;
         }
 
-        .blob-1 {
-            top: -10%;
-            left: -10%;
-            width: 55vw;
-            height: 55vw;
-            background: var(--blob-1);
-        }
+        .blob-1 { top: -10%; left: -10%; width: 55vw; height: 55vw; background: var(--blob-1); }
+        .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: var(--blob-2); }
 
-        .blob-2 {
-            bottom: -10%;
-            right: -10%;
-            width: 60vw;
-            height: 60vw;
-            background: var(--blob-2);
-        }
-
-        .dashboard {
+        .wrap {
+            width: min(520px, calc(100vw - 28px));
             background: var(--card-bg);
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
             border: 1px solid var(--border-color);
-            padding: 55px 40px 45px 40px;
             border-radius: 32px;
             box-shadow: var(--shadow);
-            text-align: center;
-            max-width: 420px;
-            width: 100%;
+            padding: 28px;
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
             position: relative;
-            transition: background 1.2s ease-in-out, 
-                        box-shadow 1.2s ease-in-out, 
-                        border 1.2s ease-in-out;
         }
 
-        .theme-toggle {
+        /* Positions Theme and Lang buttons on Top-Right */
+        .top-actions {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: var(--toggle-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            top: 18px;
+            right: 18px;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Positions Logout button on Top-Left */
+        .top-left-actions {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+        }
+
+        /* Flips action button positions when language switches to RTL Urdu */
+        body[data-lang="ur"] .top-actions {
+            right: auto;
+            left: 18px;
+        }
+
+        body[data-lang="ur"] .top-left-actions {
+            left: auto;
+            right: 18px;
+        }
+
+        /* Crystal Frost Small Pill Buttons */
+        .theme-toggle, .lang-toggle, .logout-btn {
+            background: var(--toggle-bg);
             color: var(--toggle-text);
             border: 1px solid var(--border-color);
             padding: 8px 14px;
@@ -126,93 +145,238 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: 600;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, background-color 1.2s ease-in-out, color 1.2s ease-in-out, border 1.2s ease-in-out;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: transform 0.2s ease, background-color 0.35s ease, color 0.35s ease;
         }
 
-        .theme-toggle:hover {
-            transform: scale(1.05);
+        .theme-toggle:hover, .lang-toggle:hover, .logout-btn:hover {
+            transform: scale(1.04);
+            background: var(--btn-hover);
         }
 
         h1 {
-            margin-top: 10px;
-            margin-bottom: 30px;
-            font-size: 28px;
+            margin: 34px 0 20px;
+            font-size: 30px;
             font-weight: 700;
-            letter-spacing: -0.5px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: color 1.2s ease-in-out;
+            letter-spacing: -0.6px;
+            text-align: center;
         }
 
-        .button-container {
+        .panel {
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 20px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .login-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .field {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 6px;
         }
 
-        .btn {
+        .field label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .field input {
+            width: 100%;
+            box-sizing: border-box;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 14px;
+            padding: 13px 14px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .field input:focus {
+            border-color: var(--toggle-text);
+        }
+
+        .primary-btn {
+            margin-top: 4px;
             background: var(--btn-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             color: var(--btn-text);
             border: 1px solid var(--border-color);
-            padding: 16px 20px;
-            font-size: 16px;
-            font-weight: 600;
             border-radius: 16px;
+            padding: 14px 18px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
-            text-decoration: none;
-            display: block;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.6);
-            transition: background 1.2s ease-in-out, 
-                        color 1.2s ease-in-out, 
-                        border 1.2s ease-in-out, 
-                        box-shadow 1.2s ease-in-out, 
-                        transform 0.25s ease;
+            transition: transform 0.2s ease, background 0.35s ease;
         }
 
-        .btn:hover {
+        .primary-btn:hover {
+            transform: translateY(-2px);
             background: var(--btn-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.9);
         }
 
-        .btn:active {
-            transform: translateY(-1px);
+        .app-links {
+            display: none;
+            margin-top: 8px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .link-btn {
+            text-decoration: none;
+            text-align: center;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px 18px;
+            font-size: 16px;
+            font-weight: 700;
+            transition: transform 0.2s ease, background 0.35s ease;
+        }
+
+        .link-btn:hover {
+            transform: translateY(-2px);
+            background: var(--btn-hover);
+        }
+
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
-<body>
-
+<body data-lang="en">
     <div class="liquid-bg">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
     </div>
 
-    <div class="dashboard" id="dashboardCard">
-        <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">🌙 Dark</button>
-        <h1>Textile Management</h1>
-        <div class="button-container">
-            <a href="details.html" class="btn">Details</a>
-            <a href="beam.html" class="btn">Beam</a>
-            <a href="sizing.html" class="btn">Sizing</a>
+    <div class="wrap">
+        <div class="top-left-actions">
+            <button type="button" class="logout-btn hidden" id="logoutBtn" onclick="logout()" data-en="Logout" data-ur="لاگ آؤٹ">Logout</button>
+        </div>
+
+        <div class="top-actions">
+            <button class="lang-toggle" id="langToggleBtn" onclick="toggleLang()">اردو</button>
+            <button class="theme-toggle" id="themeToggleBtn" data-en="🌙 Dark" data-ur="🌙 ڈارک" onclick="toggleTheme()">🌙 Dark</button>
+        </div>
+
+        <h1 id="pageTitle" data-en="Textile Management" data-ur="ٹیکسٹائل مینجمنٹ">Textile Management</h1>
+
+        <div class="panel" id="loginPanel">
+            <form class="login-grid" onsubmit="handleLogin(event)">
+                <div class="field">
+                    <label data-en="User Name" data-ur="صارف کا نام">User Name</label>
+                    <input type="text" id="username" data-en="Enter user name" data-ur="صارف کا نام درج کریں" placeholder="Enter user name">
+                </div>
+                <div class="field">
+                    <label data-en="Password" data-ur="پاس ورڈ">Password</label>
+                    <input type="password" id="password" data-en="Enter password" data-ur="پاس ورڈ درج کریں" placeholder="Enter password">
+                </div>
+                <button type="submit" class="primary-btn" data-en="Login" data-ur="لاگ ان">Login</button>
+            </form>
+        </div>
+
+        <div class="panel app-links" id="appPanel">
+            <a href="details.html" class="link-btn" data-en="Details" data-ur="تفصیلات">Details</a>
+            <a href="beam.html" class="link-btn" data-en="Beam" data-ur="بیم">Beam</a>
+            <a href="sizing.html" class="link-btn" data-en="Sizing" data-ur="سائزنگ">Sizing</a>
         </div>
     </div>
 
     <script>
+        const LOGIN_KEY = 'hiba_fabrics_logged_in';
+
         function toggleTheme() {
             const html = document.documentElement;
-            const btn = document.getElementById('themeToggleBtn');
-            
             if (html.getAttribute('data-theme') === 'dark') {
                 html.removeAttribute('data-theme');
-                btn.textContent = '🌙 Dark';
             } else {
                 html.setAttribute('data-theme', 'dark');
-                btn.textContent = '☀️ Light';
+            }
+            updateThemeBtnText();
+        }
+
+        function updateThemeBtnText() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeToggleBtn');
+            const lang = document.body.getAttribute('data-lang') || 'en';
+            const isDark = html.getAttribute('data-theme') === 'dark';
+
+            if (isDark) {
+                btn.textContent = lang === 'ur' ? '☀️ لائٹ' : '☀️ Light';
+            } else {
+                btn.textContent = lang === 'ur' ? '🌙 ڈارک' : '🌙 Dark';
             }
         }
-    </script>
 
+        function toggleLang() {
+            const body = document.body;
+            const btn = document.getElementById('langToggleBtn');
+            const nextLang = body.getAttribute('data-lang') === 'en' ? 'ur' : 'en';
+            
+            body.setAttribute('data-lang', nextLang);
+            btn.textContent = nextLang === 'ur' ? 'English' : 'اردو';
+            
+            applyTranslations();
+            updateThemeBtnText();
+        }
+
+        function applyTranslations() {
+            const lang = document.body.getAttribute('data-lang') || 'en';
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const en = el.getAttribute('data-en');
+                const ur = el.getAttribute('data-ur') || en;
+                
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = lang === 'ur' ? ur : en;
+                } else if (el.id !== 'themeToggleBtn') {
+                    el.textContent = lang === 'ur' ? ur : en;
+                }
+            });
+        }
+
+        function showApp(loggedIn) {
+            document.getElementById('loginPanel').classList.toggle('hidden', loggedIn);
+            document.getElementById('appPanel').style.display = loggedIn ? 'grid' : 'none';
+            document.getElementById('logoutBtn').classList.toggle('hidden', !loggedIn);
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+
+            if (!user || !pass) {
+                const lang = document.body.getAttribute('data-lang') || 'en';
+                alert(lang === 'ur' ? 'برائے مہربانی صارف نام اور پاس ورڈ درج کریں۔' : 'Enter user name and password.');
+                return;
+            }
+
+            sessionStorage.setItem(LOGIN_KEY, '1');
+            showApp(true);
+            applyTranslations();
+        }
+
+        function logout() {
+            sessionStorage.removeItem(LOGIN_KEY);
+            showApp(false);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            showApp(sessionStorage.getItem(LOGIN_KEY) === '1');
+            applyTranslations();
+        });
+    </script>
 </body>
 </html>
